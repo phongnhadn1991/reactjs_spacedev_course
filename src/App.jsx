@@ -1,26 +1,20 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./assets/tailwind.css"
 import ToDoList from "./components/ToDoList"
 
 function App() {
-  const defaultToDoList = [
-    {
-      id: 1,
-      name: 'Công Việc A',
-      isCompleted: false
-    },
-    {
-      id: 2,
-      name: 'Công Việc B',
-      isCompleted: false
-    },
-    {
-      id: 3,
-      name: 'Công Việc C',
-      isCompleted: true
-    },
-  ]
-  const [toDoList, setToDoList] = useState(defaultToDoList)
+  const KEY_TO_DO_AP = 'TO_DO_APP'
+  const [toDoList, setToDoList] = useState(() => {
+    let list = localStorage.getItem(KEY_TO_DO_AP)
+    if (list) {
+      return JSON.parse(list)
+    }
+    return []
+  })
+
+  useEffect(() => {
+    localStorage.setItem(KEY_TO_DO_AP, JSON.stringify(toDoList))
+  }, [toDoList])
 
   const onAdd = (name) => {
     const task = {
@@ -49,7 +43,6 @@ function App() {
 
   const handleStatus = (id) => {
     let task = toDoList.find(e => e.id === id)
-    console.log(toDoList)
     if (task) {
       if (task.isCompleted == false) {
         onCompleted(id)

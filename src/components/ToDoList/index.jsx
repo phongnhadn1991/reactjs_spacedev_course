@@ -19,14 +19,21 @@ export default function ToDoList({ toDoList, onAdd, handleStatus }) {
     setValue("");
   };
 
+  const _onKeyUp = (ev) => {
+    if (ev.key === 'Enter') {
+      _onAdd()
+    }
+  }
+
   return (
     <ToDoListStyle className="px-4 py-4">
-      <form className="w-full mb-5">
+      <div className="w-full mb-5">
         <div className="flex items-center border-b border-teal-500 py-2">
           <input
             className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
             type="text"
             placeholder="Enter todo"
+            onKeyUp={_onKeyUp}
             onChange={(e) => {
               setValue(e.target.value);
             }}
@@ -41,7 +48,7 @@ export default function ToDoList({ toDoList, onAdd, handleStatus }) {
             Add
           </button>
         </div>
-      </form>
+      </div>
       <div className="flex gap-6">
         <div className="w-full ml-auto h-12">
           <h4 className="text-xl font-semibold mb-4">Doing</h4>
@@ -90,7 +97,6 @@ export const ToDoItem = (props) => {
           className="sr-only peer"
           defaultChecked={isCompleted}
           onClick={() => handleStatus(id)}
-          // onChange={(e) => console.log(e)}
         />
         <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600" />
       </label>

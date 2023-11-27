@@ -1,0 +1,1 @@
+export const COURSE_API = import.meta.env.VITE_COURSE_API

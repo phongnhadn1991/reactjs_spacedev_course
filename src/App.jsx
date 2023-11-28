@@ -1,4 +1,4 @@
-import "./assets/tailwind.css"
+// import "./assets/tailwind.css"
 import { Route, Routes } from "react-router-dom"
 import Header from "./components/Common/header"
 import Todo from "./pages/todo"

@@ -1,6 +1,7 @@
 import React from 'react'
 import ToDoList from '../../components/ToDoList'
 import { useState } from "react"
+import { message } from 'antd'
 
 export default function Todo() {
   const defaultToDoList = [
@@ -49,8 +50,8 @@ export default function Todo() {
 
   const handleStatus = (id) => {
     let task = toDoList.find(e => e.id === id)
-    console.log(toDoList)
     if (task) {
+      message.success('Status is changed !', 1);
       if (task.isCompleted == false) {
         onCompleted(id)
       } else {

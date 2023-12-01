@@ -1,9 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { courseService } from '../../services/course.service'
+import { Avatar, List, Radio, Space } from 'antd';
 
 export default function Course() {
   const [loading, setLoading] = useState(true)
   const [cousrses, setCourses] = useState([])
+
+  const data = [
+    {
+      title: 'Ant Design Title 1',
+    },
+    {
+      title: 'Ant Design Title 2',
+    },
+    {
+      title: 'Ant Design Title 3',
+    },
+    {
+      title: 'Ant Design Title 4',
+    },
+  ];
 
   const fetchData = async () => {
     setLoading(true)
@@ -47,6 +63,21 @@ export default function Course() {
           </tbody>
         </table>
       </div>
+      <List
+        pagination
+        dataSource={cousrses}
+        renderItem={(item, index) => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={
+                <Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />
+              }
+              title={<a href="https://ant.design">{item.title} - {item.money}</a>}
+              description={item.opening_time}
+            />
+          </List.Item>
+        )}
+      />
     </div>
   )
 }

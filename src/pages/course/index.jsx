@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { courseService } from '../../services/course.service'
 import { Col, Pagination, Row } from 'antd';
 import styled from 'styled-components'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Course() {
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
   const itemsPerPage = 9
   const [cousrses, setCourses] = useState([])
   const [paginate, setPaginate] = useState(null)
@@ -25,9 +26,13 @@ export default function Course() {
   }, [])
 
   const onChangePage = (page) => {
-    console.log(history)
+    navigate({
+      pathname: '/course',
+      search: `?page=${page}`,
+    });
     setCurrentPage(page)
   }
+
 
   const totalPage = Math.ceil(paginate?.count / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;

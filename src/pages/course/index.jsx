@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { courseService } from '../../services/course.service'
 import { Col, Pagination, Row } from 'antd';
 import styled from 'styled-components'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 export default function Course() {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams();
+  const pageParam = parseInt(searchParams.get('page'));
   const itemsPerPage = 9
   const [cousrses, setCourses] = useState([])
   const [paginate, setPaginate] = useState(null)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(null)
 
   const fetchData = async () => {
     setLoading(true)
@@ -25,6 +27,20 @@ export default function Course() {
     fetchData();
   }, [])
 
+  const totalPage = Math.ceil(paginate?.count / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage - 1, paginate?.count - 1);
+  const itemsForCurrentPage = cousrses.slice(startIndex, endIndex + 1);
+
+  useEffect(() => {
+    const page = pageParam || 1;
+    if (page > totalPage && !isNaN(page) || page <= 0) {
+      navigate(`/course?page=1`);
+    } else {
+      setCurrentPage(page);
+    }
+  }, [pageParam, totalPage, navigate]);
+
   const onChangePage = (page) => {
     navigate({
       pathname: '/course',
@@ -32,12 +48,6 @@ export default function Course() {
     });
     setCurrentPage(page)
   }
-
-
-  const totalPage = Math.ceil(paginate?.count / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage - 1, paginate?.count - 1);
-  const itemsForCurrentPage = cousrses.slice(startIndex, endIndex + 1);
 
   return (
     <div className='l-course'>

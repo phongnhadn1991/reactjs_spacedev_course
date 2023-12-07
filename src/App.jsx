@@ -11,30 +11,35 @@ import {
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import styled from "styled-components";
 const { Header, Content, Footer, Sider } = Layout;
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
 
-import { Route, Routes } from "react-router-dom"
+import { Link, Route, Routes, useLocation } from "react-router-dom"
 import Todo from "./pages/todo"
 import Course from "./pages/course"
 import Home from "./pages"
 
 const items = [
-  getItem('HomePage', '/', <PieChartOutlined />),
-  getItem('Todo', '/todo', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
+  { key: '1', title: 'HomePage', link: '/', icon: <PieChartOutlined /> },
+  { key: '2', title: 'Course', link: '/course', icon: <DesktopOutlined /> },
+  {
+    key: 'sub1',
+    title: 'User',
+    icon: <UserOutlined />,
+    submenu: [
+      { key: '3', title: 'Tom', link: '/user/3' },
+      { key: '4', title: 'Bill', link: '/user/4' },
+      { key: '5', title: 'Alex', link: '/user/5' },
+    ],
+  },
+  {
+    key: 'sub2',
+    title: 'Team',
+    icon: <TeamOutlined />,
+    submenu: [
+      { key: '6', title: 'Team 1', link: '/team/6' },
+      { key: '7', title: 'Team 2', link: '/team/7' },
+    ],
+  },
+  { key: '9', title: 'Files', link: '/files', icon: <FileOutlined /> },
 ];
 
 const LogoStyle = styled.div`
@@ -50,6 +55,15 @@ const App = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const getKeyFromPath = (path) => {
+    const item = items.find((item) => item.link === path);
+    return item ? item.key : '';
+  };
+  const currentKey = getKeyFromPath(currentPath);
+
   return (
     <ConfigProvider direction="ltr">
       <Layout
@@ -59,7 +73,23 @@ const App = () => {
       >
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
           <LogoStyle></LogoStyle>
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+          <Menu theme="dark" selectedKeys={[currentKey]} mode="inline">
+            {items.map((item) =>
+              item?.submenu ? (
+                <Menu.SubMenu key={item.key} title={item.title} icon={item.icon}>
+                  {item?.submenu.map((child) => (
+                    <Menu.Item key={child.key} icon={child.icon}>
+                      <Link to={child.link}>{child.title}</Link>
+                    </Menu.Item>
+                  ))}
+                </Menu.SubMenu>
+              ) : (
+                <Menu.Item key={item.key} icon={item.icon}>
+                  <Link to={item.link}>{item.title}</Link>
+                </Menu.Item>
+              )
+            )}
+          </Menu>
         </Sider>
         <Layout>
           <Header

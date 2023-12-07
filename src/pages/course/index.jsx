@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { courseService } from '../../services/course.service'
-import { Col, Pagination, Row } from 'antd';
+import { Col, Pagination, Row, Space, Spin } from 'antd';
 import styled from 'styled-components'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -51,15 +51,22 @@ export default function Course() {
 
   return (
     <div className='l-course'>
-      <Row gutter={[30, 30]}>
-        {itemsForCurrentPage.map(item => <Col key={item._id} span={8}><ItemCourse item={item} /></Col>)}
-      </Row>
-      <Pagination
-        current={currentPage}
-        total={paginate?.count}
-        pageSize={itemsPerPage}
-        onChange={(currentPage) => onChangePage(currentPage)}
-        style={{ margin: '60px 0 30px', display: 'flex', justifyContent: 'center' }} />
+      {itemsForCurrentPage.length <= 0 && loading ?
+        <Space direction="horizontal" style={{ width: '100%', justifyContent: 'center' }}>
+          <Spin />
+        </Space> : (
+          <>
+            <Row gutter={[30, 30]}>
+              {itemsForCurrentPage.map(item => <Col key={item._id} span={8}><ItemCourse item={item} /></Col>)}
+            </Row>
+            <Pagination
+              current={currentPage}
+              total={paginate?.count}
+              pageSize={itemsPerPage}
+              onChange={(currentPage) => onChangePage(currentPage)}
+              style={{ margin: '60px 0 30px', display: 'flex', justifyContent: 'center' }} />
+          </>
+        )}
     </div>
   )
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../stores/context/AuthContext';
-import { userService } from '../../services/user_service';
 
 export default function Login() {
   const { login } = useAuth()
@@ -19,13 +18,6 @@ export default function Login() {
       password
     })
   }
-
-  useEffect(() => {
-    // test call api => refresh Token
-    console.log('Live token')
-    const fetchUser = async () => await userService.getProfile()
-    fetchUser();
-  }, []);
 
   return (
     <div className='formLogin'>

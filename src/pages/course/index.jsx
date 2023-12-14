@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { courseService } from '../../services/course.service'
+import { courseService } from '../../services/course_service'
 import { Col, Pagination, Row, Space, Spin } from 'antd';
 import styled from 'styled-components'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';

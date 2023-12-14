@@ -7,6 +7,7 @@ import {
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
+  LockOutlined
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import styled from "styled-components";
@@ -40,6 +41,7 @@ const items = [
     ],
   },
   { key: '9', title: 'Files', link: '/files', icon: <FileOutlined /> },
+  { key: '10', title: 'User', link: '/authent/login', icon: <LockOutlined /> },
 ];
 
 const LogoStyle = styled.div`
@@ -49,6 +51,7 @@ const LogoStyle = styled.div`
     border-radius: 6px;
 `
 import { ConfigProvider } from 'antd';
+import Login from "./pages/authent/login";
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -128,6 +131,7 @@ const App = () => {
             >
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/authent/login" element={<Login />} />
                 <Route path="/todo" element={<Todo />} />
                 <Route path="/course" element={<Course />} />
               </Routes>

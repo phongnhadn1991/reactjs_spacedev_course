@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { authService } from "../../../services/authent_service";
-import { setToken, setUser } from "../../../untils/token";
+import { clearToken, clearUser, setToken, setUser } from "../../../untils/token";
 import { userService } from "../../../services/user_service";
 
 const AuthContext = createContext({})
@@ -14,10 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (data) => {
     try {
-      const res = await authService.login({
-        username: "yimiyej346@rdluxe.com",
-        password: "yimiyej346"
-      })
+      const res = await authService.login(data)
       if (res.data) {
         setToken(res.data)
         const userData = await userService.getProfile()
@@ -29,7 +26,9 @@ export const AuthProvider = ({ children }) => {
     }
   }
   const logout = () => {
-    setUser(null)
+    clearUser()
+    clearToken()
+    _setUser(null)
   }
 
   return <AuthContext.Provider value={{ user, login, logout }}>

@@ -7,7 +7,8 @@ import {
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
-  LockOutlined
+  LockOutlined,
+  LogoutOutlined
 } from '@ant-design/icons';
 import { Avatar, Breadcrumb, Layout, Menu, Space, theme } from 'antd';
 import styled from "styled-components";
@@ -18,6 +19,7 @@ import Course from "./pages/course"
 import Home from "./pages"
 import Login from "./pages/login";
 import { useAuth } from "./stores/context/AuthContext";
+import { PrivateRouter } from "./components/PrivateRouter";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -29,12 +31,9 @@ const items = [
     title: 'User',
     icon: <UserOutlined />,
     submenu: [
-      { key: '3', title: 'Tom', link: '/user/3' },
-      { key: '4', title: 'Bill', link: '/user/4' },
-      { key: '5', title: 'Alex', link: '/user/5' },
+      { key: '3', title: 'Todo', link: '/todo' },
     ],
   },
-  { key: '10', title: 'Login', link: '/login', icon: <LockOutlined /> },
 ];
 
 const LogoStyle = styled.div`
@@ -53,7 +52,7 @@ const App = () => {
   const currentPath = location.pathname;
   const getKeyFromPath = (path) => {
     const item = items.find((item) => item.link === path);
-    return item ? item.key : '';
+    return item ? item.key : 'login';
   };
   const currentKey = getKeyFromPath(currentPath);
 
@@ -84,6 +83,14 @@ const App = () => {
                 </Menu.Item>
               )
             )}
+            {!user
+              ? <Menu.Item key={'login'} icon={<LockOutlined />}>
+                <Link to={"/login"}>Login</Link>
+              </Menu.Item>
+              : <Menu.Item key={'logout'} icon={<LogoutOutlined />}>
+                <Link onClick={logout}>Logout</Link>
+              </Menu.Item>
+            }
           </Menu>
         </Sider>
         <Layout>
@@ -99,11 +106,6 @@ const App = () => {
                   <img className="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avarta" />
                 </button>
                 <span className="flex">{user?.name}</span>
-              </div>
-              <div className={`${user ? '' : 'hidden'} absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`} role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex={-1}>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1} id="user-menu-item-0">Your Profile</a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1} id="user-menu-item-1">Settings</a>
-                <a onClick={logout} className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1} id="user-menu-item-2">Sign out</a>
               </div>
             </div>
           </Header>
@@ -138,8 +140,10 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/todo" element={<Todo />} />
-                <Route path="/course" element={<Course />} />
+                <Route element={<PrivateRouter />}>
+                  <Route path="/todo" element={<Todo />} />
+                  <Route path="/course" element={<Course />} />
+                </Route>
               </Routes>
             </div>
           </Content>
@@ -152,7 +156,7 @@ const App = () => {
           </Footer>
         </Layout>
       </Layout>
-    </ConfigProvider >
+    </ConfigProvider>
   );
 };
 export default App;

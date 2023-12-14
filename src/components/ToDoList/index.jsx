@@ -21,7 +21,7 @@ export default function ToDoList({ toDoList, onAdd, handleStatus }) {
   const _onAdd = () => {
     onAdd(value.trim());
     setValue("");
-    message.success(`Todo: ${value} is added !`, 1);
+    message.success(`Todo: ${value} is added !`);
   };
 
   return (
@@ -42,6 +42,7 @@ export default function ToDoList({ toDoList, onAdd, handleStatus }) {
               type="primary"
               disabled={!value.trim()}
               onClick={_onAdd}
+              className="bg-blue-600"
             >Submit</Button>
           </Space.Compact>
         </div>
@@ -89,14 +90,14 @@ export const ToDoItem = (props) => {
   return (
     <ToDoItemStyle className={isCompleted ? "isCompleted" : ""}>
       <div className="name">{name}</div>
-      <label className="relative inline-flex items-center cursor-pointer">
+      <label className="relative inline-flex items-center cursor-pointer ">
         <Switch defaultChecked={isCompleted}
+        className="bg-gray-300"
           onChange={() => {
             setTimeout(() => {
               handleStatus(id)
             }, 300);
           }} />
-        <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600" />
       </label>
     </ToDoItemStyle>
   );

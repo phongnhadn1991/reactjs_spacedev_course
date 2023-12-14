@@ -51,7 +51,7 @@ export default function Todo() {
   const handleStatus = (id) => {
     let task = toDoList.find(e => e.id === id)
     if (task) {
-      message.success('Status is changed !', 1);
+      message.success('Status is changed !');
       if (task.isCompleted == false) {
         onCompleted(id)
       } else {

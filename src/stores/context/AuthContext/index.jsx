@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { authService } from "../../../services/authent_service";
 import { clearToken, clearUser, setToken, setUser } from "../../../untils/token";
 import { userService } from "../../../services/user_service";
+import { message } from "antd";
 
 const AuthContext = createContext({})
 
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await authService.login(data)
       if (res.data) {
+        message.success(`Login Success !`)
         setToken(res.data)
         const userData = await userService.getProfile()
         _setUser(userData.data)
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }) => {
     clearUser()
     clearToken()
     _setUser(null)
+    message.success(`Logout Success !`)
   }
 
   return <AuthContext.Provider value={{ user, login, logout }}>

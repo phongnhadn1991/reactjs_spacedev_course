@@ -16,12 +16,12 @@ export const AuthProvider = ({ children }) => {
   const login = async (data) => {
     try {
       const res = await authService.login(data)
-      if (res.data) {
+      if (res) {
         message.success(`Login Success !`)
-        setToken(res.data)
+        setToken(res.jwt)
         const userData = await userService.getProfile()
-        _setUser(userData.data)
-        setUser(userData.data)
+        _setUser(userData)
+        setUser(userData)
       }
     } catch (error) {
       console.log(error)

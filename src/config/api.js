@@ -18,7 +18,7 @@ api.interceptors.response.use((res) => {
       const res = await authService.refreshToken({
         refreshToken: token.refreshToken
       })
-      setToken(res.data)
+      setToken(res.data.jwt)
 
       // thuc ti lai api bi loi
       return api(error.config)
@@ -33,7 +33,7 @@ api.interceptors.response.use((res) => {
 api.interceptors.request.use((config) => {
   const token = getToken()
   if (token) {
-    config.headers['Authorization'] = `Bearer ${token.accessToken}`
+    config.headers['Authorization'] = `Bearer ${token}`
   }
   return config
 })

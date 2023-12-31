@@ -5,6 +5,6 @@ export const userService = {
     return api.post(`${USER_API}/register`, data)
   },
   getProfile() {
-    return api.get(`${USER_API}`)
+    return api.get(`${USER_API}/me`)
   }
 }

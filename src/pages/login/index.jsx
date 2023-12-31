@@ -3,18 +3,18 @@ import { useAuth } from '../../stores/context/AuthContext';
 
 export default function Login() {
   const { login } = useAuth()
-  const [username, setUsername] = useState('')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
 
   const _onResetForm = () => {
-    setUsername('')
+    setIdentifier('')
     setPassword('')
   }
 
   const _onLogin = () => {
     _onResetForm()
     login({
-      username,
+      identifier,
       password
     })
   }
@@ -25,11 +25,11 @@ export default function Login() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <div className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+              <label htmlFor="identifier" className="block text-sm font-medium leading-6 text-gray-900">Username</label>
               <div className="mt-2">
-                <input id="email" name="email" type="email" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                <input id="identifier" name="identifier" type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
                 />
               </div>
             </div>

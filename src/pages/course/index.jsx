@@ -10,7 +10,7 @@ export default function Course() {
   const [searchParams] = useSearchParams();
   const pageParam = parseInt(searchParams.get('page'));
   const itemsPerPage = 9
-  const [cousrses, setCourses] = useState([])
+  const [courses, setCourses] = useState([])
   const [paginate, setPaginate] = useState(null)
   const [currentPage, setCurrentPage] = useState(null)
 
@@ -19,7 +19,7 @@ export default function Course() {
     const res = await courseService.getCourse()
     if (res) {
       setCourses(res?.data?.data)
-      setPaginate(res?.data?.paginate)
+      setPaginate(res?.data?.meta?.pagination)
     }
     setLoading(false)
   }
@@ -27,10 +27,10 @@ export default function Course() {
     fetchData();
   }, [])
 
-  const totalPage = Math.ceil(paginate?.count / itemsPerPage);
+  const totalPage = Math.ceil(paginate?.total / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage - 1, paginate?.count - 1);
-  const itemsForCurrentPage = cousrses.slice(startIndex, endIndex + 1);
+  const endIndex = Math.min(startIndex + itemsPerPage - 1, paginate?.pageSize - 1);
+  const itemsForCurrentPage = courses.slice(startIndex, endIndex + 1);
 
   useEffect(() => {
     const page = pageParam || 1;
@@ -57,11 +57,11 @@ export default function Course() {
         </Space> : (
           <>
             <Row gutter={[30, 30]}>
-              {itemsForCurrentPage.map(item => <Col key={item._id} span={8}><ItemCourse item={item} /></Col>)}
+              {itemsForCurrentPage.map(item => <Col key={item.id} span={8}><ItemCourse item={item} /></Col>)}
             </Row>
             <Pagination
               current={currentPage}
-              total={paginate?.count}
+              total={paginate?.total}
               pageSize={itemsPerPage}
               onChange={(currentPage) => onChangePage(currentPage)}
               style={{ margin: '60px 0 30px', display: 'flex', justifyContent: 'center' }} />
@@ -93,15 +93,15 @@ export const DesStyle = styled.div`
 export const ItemCourse = ({ item }) => {
   return (
     <Link to={`/course/${item.id}`} className='itemCourse'>
-      <div className='itemCourse_thumb' >
+      <div className='itemCourse_thumb'>
         <ImgStyle>
-          {item.thumbnailUrl && <img src={item.thumbnailUrl} alt={item.title} />}
+          {item?.attributes?.thumbnailUrl && <img src={'http://localhost:1337' + item.attributes?.thumbnailUrl?.data?.attributes?.url} alt={item?.attributes?.title} />}
         </ImgStyle>
       </div>
       <div className='itemCourse_body'>
-        <h4>{item.title}</h4>
+        <h4>{item.attributes.title}</h4>
         <DesStyle>
-          {item.long_description}
+          {item.attributes.short_description}
         </DesStyle>
       </div>
     </Link>

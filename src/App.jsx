@@ -3,9 +3,7 @@ import "antd/dist/reset.css"
 import React, { useState } from 'react';
 import {
   DesktopOutlined,
-  FileOutlined,
   PieChartOutlined,
-  TeamOutlined,
   UserOutlined,
   LockOutlined,
   LogoutOutlined
@@ -138,12 +136,12 @@ const App = () => {
               }}
             >
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
                 <Route element={<PrivateRouter />}>
+                  <Route path="/" element={<Home />} />
                   <Route path="/todo" element={<Todo />} />
                   <Route path="/course" element={<Course />} />
                 </Route>
+                <Route path="/login" element={<Login />} />
               </Routes>
             </div>
           </Content>
